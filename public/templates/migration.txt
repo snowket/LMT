@@ -1,0 +1,29 @@
+<?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class %className% extends Migration
+{
+    private static $table = '%tableName%';
+    
+    public function up()
+    {
+        if (!Schema::hasTable( self::$table ))
+        {
+            Schema::create( self::$table, function ( Blueprint $table ) 
+            {
+            $table->increments('id');
+            $table->integer('year')->unique();
+            $table->longText('description');
+            $table->smallInteger('is_publish');
+            $table->timestamps();
+            });
+        }
+    }
+
+    public function down()
+    {
+        //
+    }
+}
