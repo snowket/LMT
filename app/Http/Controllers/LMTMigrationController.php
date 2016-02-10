@@ -79,5 +79,27 @@ class LMTMigrationController extends Controller
         return view('include.table_form',compact('id'));
     }
 
+    public function renderTableBody(Request $request,$id)
+    {
+
+        // dd($request->input('field'));
+        $table=LMTMigration::find($id);
+        if($table->folder_name=='NULL'){
+            $filePath=base_path() . env('MIGRATION_FOLDER_PATH').'/'.$table->migration_name;
+        }
+        else{
+            $filePath=base_path() . env('MIGRATION_FOLDER_PATH').env('LARAVEL_PROJECT_NAME').$table->folder_name.'/'.$table->migration_name.'.php';
+
+        }
+        $table='';
+        foreach ($request->input('field') as $key => $value) {
+            $table.='$table->'.$value.'("'.$request->input('names')[$key].'");' . PHP_EOL;
+        }
+        $migrationTemplateContent = file_get_contents( $filePath, FILE_USE_INCLUDE_PATH );
+        $migrationTemplateContent = str_replace('%tableBody%',$table, $migrationTemplateContent);
+        file_put_contents( $filePath, $migrationTemplateContent);
+        dd($table);
+    }
+
 
 }

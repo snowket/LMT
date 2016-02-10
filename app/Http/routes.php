@@ -22,6 +22,9 @@ $app->get('/migration', function () use ($app) {
 });
 
 $app->get('/migration/controll/{id}','LMTMigrationController@edit');
+$app->post('/migration/save/{id}','LMTMigrationController@renderTableBody');
+
+
 
 $app->post('/migration','LMTMigrationController@save');
 
